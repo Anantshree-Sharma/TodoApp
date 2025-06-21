@@ -1,10 +1,23 @@
 const express = require("express");
 
-const { handleSignup } = require("../controllers/user.controller");
 const signupValidator = require("../validations/signup.vadidator");
+const authentication = require("../middlewares/auth");
+const {
+  handleSignup,
+  handleLogin,
+  handleLogout,
+  getProfile,
+} = require("../controllers/user.controller");
 
-const authRouter = express.Router();
+const userRouter = express.Router();
 
-authRouter.post("/user/signup", signupValidator, handleSignup);
+//routes
+userRouter.post("/user/signup", signupValidator, handleSignup);
 
-module.exports = authRouter;
+userRouter.post("/user/login", handleLogin);
+
+userRouter.get("/user/profile", authentication, getProfile);
+
+userRouter.post("/user/logout", authentication, handleLogout);
+
+module.exports = userRouter;

@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
   },
   { timestamps: true }
@@ -34,7 +35,9 @@ userSchema.methods.comparePassword = function (password) {
 };
 
 userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ id: this._id, email: this.email }, process.env.JWT_SECRET);
+  return jwt.sign({ id: this._id, email: this.email }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
 };
 
 const User = mongoose.model("User", userSchema);
