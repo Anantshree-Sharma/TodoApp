@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 //local modules
 const dbConnect = require("./config/db");
 const userRouter = require("./routes/user.route");
+const taskRouter = require("./routes/task.route");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(userRouter);
+app.use(taskRouter);
 
 const PORT = process.env.PORT || 3001;
 
