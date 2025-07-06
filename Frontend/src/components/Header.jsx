@@ -7,7 +7,7 @@ import Logo from "./Logo";
 
 function Header() {
   const [showNav, setShowNav] = useState(false);
-  const { isAuth, setIsAuth, setUser } = useUser();
+  const { isAuth, setIsAuth, setUser, logout } = useUser();
   const navigate = useNavigate();
   const navLinks = isAuth
     ? [
@@ -23,21 +23,14 @@ function Header() {
       ];
 
   const handleLogout = async () => {
-    const BASE_URL = import.meta.env.VITE_BASE_URL;
     try {
-      const res = await fetch(`${BASE_URL}/user/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      const result = res.json();
+      const result = await logout();
 
       if (result.error) {
         toast.error(result.error);
       }
       setUser(null);
       setIsAuth(false);
-      toast.info(result.msg);
       navigate("/login");
     } catch (error) {
       console.log(error);

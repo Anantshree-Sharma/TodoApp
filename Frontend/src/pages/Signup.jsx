@@ -2,7 +2,8 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useUser } from "../context/userContext/useUser";
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -12,6 +13,8 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const { isAuth } = useUser();
 
   const navigate = useNavigate();
 
@@ -66,6 +69,10 @@ function Signup() {
       console.log("Error while registration", error);
     }
   };
+
+  if (isAuth) {
+    return <Navigate to="/home" replace />;
+  }
 
   return (
     <>

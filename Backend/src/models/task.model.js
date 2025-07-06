@@ -23,7 +23,7 @@ const taskSchema = mongoose.Schema(
         "professional",
         "personal",
         "home",
-        "heath",
+        "health",
         "shopping",
         "social ",
         "others",

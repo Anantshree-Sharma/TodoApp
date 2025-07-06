@@ -1,6 +1,6 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useUser } from "../context/userContext/useUser";
 
@@ -9,7 +9,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { setIsAuth } = useUser();
+  const { isAuth, setIsAuth } = useUser();
 
   const handlePasswordVisible = (e) => {
     e.preventDefault();
@@ -39,12 +39,15 @@ function Login() {
         toast.error(result.error);
         return;
       }
-      toast.success(result.msg);
       setIsAuth(true);
     } catch (error) {
       console.log("Error while login: ", error);
     }
   };
+
+  if (isAuth) {
+    return <Navigate to="/home" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4">

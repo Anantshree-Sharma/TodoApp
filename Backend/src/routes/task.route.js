@@ -5,6 +5,7 @@ const {
   removeTask,
   getAllTasks,
   updateTask,
+  getTask,
 } = require("../controllers/task.controller.js");
 
 const taskRouter = express.Router();
@@ -13,6 +14,7 @@ taskRouter.use(authentication);
 
 taskRouter.post("/task/add", addTask);
 taskRouter.get("/task/all", getAllTasks);
+taskRouter.get("/task/:id", getTask);
 taskRouter.patch("/task/edit/:id", updateTask);
 taskRouter.delete("/task/delete/:id", removeTask);
 

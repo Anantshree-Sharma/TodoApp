@@ -39,6 +39,23 @@ exports.getAllTasks = async (req, res) => {
   }
 };
 
+exports.getTask = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const task = await findTaskById(id);
+    if (!task) {
+      throw new AppError("Task not found", 401);
+    }
+
+    res.status(200).json(task);
+  } catch (err) {
+    if (err instanceof AppError) {
+      return res.status(err.statusCode).json({ error: err.message });
+    }
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
 exports.updateTask = async (req, res) => {
   const user = req.user;
   const id = req.params.id;

@@ -1,8 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
+import { useUser } from "../context/userContext/useUser";
 
 export default function Start() {
+  const { isAuth } = useUser();
+  if (isAuth) {
+    return <Navigate to={"/home"} replace />;
+  }
   return (
     <div>
       <div className="bg-[url('/bg-img-small.avif')] md:bg-[url('/bg-img.avif')] md:bg-center md:bg-cover bg-bottom bg-contain w-full h-[calc(100vh-113px)] bg-no-repeat">

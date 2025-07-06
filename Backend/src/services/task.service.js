@@ -9,7 +9,7 @@ exports.deleteTask = async (deleteId) => {
 };
 
 exports.findTaskById = async (id) => {
-  return await Task.findById(id);
+  return await Task.findById(id).select("-createdAt -updatedAt -__v");
 };
 
 exports.findTasksByUserId = async (userId) => {

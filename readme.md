@@ -455,6 +455,62 @@ Content-Type: application/json
 
 ---
 
+## `/task/:id` Endpoint
+
+### Description:
+
+Fetches task according to the id received in params.
+
+### HTTP Method : `GET`
+
+### URL : `/task/:id`
+
+### Request Format :
+
+#### Headers
+
+```
+Content-Type: application/json
+```
+
+#### Request Body
+
+- No body required
+
+### Response Format :
+
+#### Success Response
+
+**Status Code :** `200 ok`
+
+```json
+{
+  "_id": "68632e78e80e2e20a4afee0c",
+  "title": "Home Work",
+  "description": "Finish calculas chapter 1 and 2",
+  "status": "in-progress",
+  "category": "study",
+  "date": "01-07-2025"
+}
+```
+
+#### Error Responses
+
+| Status Code | Message                         |
+| ----------- | ------------------------------- |
+| `401`       | Unauthorized (if not logged in) |
+| `500`       | Something went wrong            |
+
+```json
+{
+  "error": "Something went wrong"
+}
+```
+
+---
+
+---
+
 ## `/task/delete/:id` Endpoint
 
 ### Description:
@@ -584,3 +640,7 @@ Example:-
 | `401`       | Unauthorized             |
 | `404`       | Task not found           |
 | `500`       | Something went wrong     |
+
+---
+
+---
