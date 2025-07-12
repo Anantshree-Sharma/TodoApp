@@ -8,6 +8,7 @@ import Logo from "./Logo";
 function Header() {
   const [showNav, setShowNav] = useState(false);
   const { isAuth, setIsAuth, setUser, logout } = useUser();
+
   const navigate = useNavigate();
   const navLinks = isAuth
     ? [
@@ -23,17 +24,37 @@ function Header() {
       ];
 
   const handleLogout = async () => {
+    const toastId = toast.loading("Logging out...", {
+      autoClose: false,
+    });
     try {
       const result = await logout();
 
       if (result.error) {
-        toast.error(result.error);
+        toast.update(toastId, {
+          render: result.error,
+          type: "error",
+          isLoading: false,
+          autoClose: 1000,
+        });
       }
       setUser(null);
       setIsAuth(false);
+      toast.update(toastId, {
+        render: "Logged out",
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
+      });
       navigate("/login");
     } catch (error) {
       console.log(error);
+      toast.update(toastId, {
+        render: "Something went wrong",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
   };
 
