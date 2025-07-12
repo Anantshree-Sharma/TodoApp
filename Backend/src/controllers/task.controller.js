@@ -3,6 +3,7 @@ const {
   deleteTask,
   findTaskById,
   findTasksByUserId,
+  findTasksBydate,
 } = require("../services/task.service");
 const AppError = require("../utils/AppError");
 
@@ -24,7 +25,6 @@ exports.addTask = async (req, res) => {
     const error =
       err instanceof AppError ? err.message : "Something went wrong";
     const statusCode = err instanceof AppError ? err.statusCode : 500;
-    console.log(err);
     res.status(statusCode).json({ error });
   }
 };
@@ -41,18 +41,32 @@ exports.getAllTasks = async (req, res) => {
 
 exports.getTask = async (req, res) => {
   const id = req.params.id;
+  const user = req.user;
   try {
     const task = await findTaskById(id);
     if (!task) {
       throw new AppError("Task not found", 401);
     }
-
+    if (!task.userId.equals(user._id)) {
+      throw new AppError("unauthorized", 401);
+    }
     res.status(200).json(task);
   } catch (err) {
     if (err instanceof AppError) {
       return res.status(err.statusCode).json({ error: err.message });
     }
     res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+exports.getTasksByDate = async (req, res) => {
+  const user = req.user;
+  const date = req.query.date;
+  try {
+    const tasks = await findTasksBydate(date, user._id);
+    res.status(200).json(tasks);
+  } catch (err) {
+    res.status(500).json({ error: "something went wrong" });
   }
 };
 
@@ -68,7 +82,7 @@ exports.updateTask = async (req, res) => {
     if (!task.userId.equals(user._id)) {
       throw new AppError("unauthorized", 401);
     }
-    if (!title || !description || !status || !category) {
+    if (!title || !status || !category) {
       throw new AppError("Missing or invalid input", 400);
     }
     task.title = title;

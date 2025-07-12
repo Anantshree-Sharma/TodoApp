@@ -15,3 +15,7 @@ exports.findTaskById = async (id) => {
 exports.findTasksByUserId = async (userId) => {
   return await Task.find({ userId });
 };
+
+exports.findTasksBydate = async (date, userId) => {
+  return await Task.find({ date, userId });
+};

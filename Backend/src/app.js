@@ -11,10 +11,15 @@ const taskRouter = require("./routes/task.route");
 
 const app = express();
 
+const origin =
+  process.env.NODE_ENV === "production"
+    ? process.env.CLIENT_URL
+    : "http://localhost:5173";
+
 //middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin,
     credentials: true,
   })
 );
@@ -29,6 +34,6 @@ const PORT = process.env.PORT || 3001;
 
 dbConnect(() => {
   app.listen(PORT, () => {
-    console.log(`Running on http://localhost:${PORT}`);
+    console.log(`Running on ${PORT}`);
   });
 });

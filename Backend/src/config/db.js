@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const AppError = require("../utils/AppError");
 
 const DB_URL = process.env.DB_URL;
 
@@ -10,7 +11,8 @@ const dbConnect = (callback) => {
       callback();
     })
     .catch((error) => {
-      console.log("Error Connecting to DB: ", error);
+      console.log("Error Connecting to DB: ", error.message);
+      process.exit(1);
     });
 };
 

@@ -21,7 +21,6 @@ const authentication = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    console.log(err);
     const error =
       err.name === "AppError" ? err.message : "invalid or expired token";
     const statusCode = err.name === "AppError" ? err.statusCode : 403;

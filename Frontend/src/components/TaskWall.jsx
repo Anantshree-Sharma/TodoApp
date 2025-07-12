@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
 import { useTask } from "../context/taskContext/useTask";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import SpinnerLoading from "./SpinnerLoading";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 function TaskWall() {
-  const { tasks, setTasks } = useTask();
-  const [loading, setLoading] = useState(true);
+  dayjs.extend(customParseFormat);
+  const currentDate = dayjs().format("DD-MM-YYYY");
+  const { tasks, taskLoading, date, setDate } = useTask();
 
   const stickyColors = [
     "bg-yellow-200 border-yellow-300",
@@ -22,36 +25,11 @@ function TaskWall() {
     "bg-teal-200 border-teal-300",
   ];
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const BASE_URL = import.meta.env.VITE_BASE_URL;
-      try {
-        const res = await fetch(`${BASE_URL}/task/all`, {
-          method: "GET",
-          credentials: "include",
-        });
-        const result = await res.json();
-        if (result.error) {
-          toast.error(result.error);
-        }
-        setTasks(result);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      }
-    };
-
-    fetchTasks();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-4 md:p-8 ml-0 sm:ml-52 md:ml-56 lg:ml-64 xl:ml-64 pt-20 px-4">
       <div className="max-w-7xl mx-auto">
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-12 justify-items-center max-w-7xl mx-auto">
+        {taskLoading ? (
+          <div className="grid grid-cols-1 my-20 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-8 md:gap-12 justify-items-center max-w-7xl mx-auto">
             {Array.from({ length: 8 }).map((_, index) => (
               <SkeletonTheme
                 key={index}
@@ -80,8 +58,32 @@ function TaskWall() {
         ) : (
           <>
             {/* Tasks Grid */}
+            <div className="flex items-center justify-center my-4">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Pick Date"
+                  value={dayjs(date, "DD-MM-YYYY")}
+                  maxDate={dayjs()}
+                  format="DD MMMM, YYYY"
+                  onChange={(newValue) => {
+                    const formatted = newValue?.format("DD-MM-YYYY");
+                    setDate(formatted);
+                  }}
+                />
+              </LocalizationProvider>
+            </div>
+            <p className="text-center text-gray-600 mb-10 text-2xl">
+              {currentDate === date
+                ? `Todays's Tasks`
+                : `${dayjs(date, "DD-MM-YYYY").format("DD MMMM, YYYY")} Tasks`}
+            </p>
+            {tasks.length === 0 && (
+              <p className="text-center text-2xl text-gray-300">
+                No tasks for {date}.
+              </p>
+            )}
             {tasks.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-12 justify-items-center max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-8 md:gap-12 justify-items-center max-w-7xl mx-auto">
                 {tasks.map((task, index) => (
                   <Link
                     to={`/home/task/${task._id}`}

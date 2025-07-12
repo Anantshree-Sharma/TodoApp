@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import SpinnerLoading from "./SpinnerLoading";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,9 @@ function EditTask() {
   const [category, setCategory] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/home";
 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -69,7 +72,8 @@ function EditTask() {
         toast.error(result.error);
         return;
       }
-      navigate("/home/task-wall");
+
+      navigate(-1);
     } catch (error) {
       toast.error(error.message);
       console.log(error);
@@ -91,7 +95,7 @@ function EditTask() {
 
       if (res.status === 204) {
         toast.success("deleted");
-        navigate("/home/task-wall");
+        navigate("/home");
         return;
       }
 

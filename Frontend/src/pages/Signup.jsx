@@ -61,10 +61,7 @@ function Signup() {
           {result.msg}
         </div>
       );
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
+      navigate("/login");
     } catch (error) {
       console.log("Error while registration", error);
     }

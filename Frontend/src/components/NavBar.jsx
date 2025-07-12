@@ -8,10 +8,10 @@ import {
 function NavBar() {
   const navItems = [
     {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: <ChartBarIcon className="w-5 h-5" />,
-      path: "/home/dashboard",
+      id: "task-wall",
+      label: "Task Wall",
+      icon: <ClipboardIcon className="w-5 h-5" />,
+      path: "/home",
     },
     {
       id: "add-task",
@@ -20,23 +20,24 @@ function NavBar() {
       path: "/home/add-task",
     },
     {
-      id: "task-wall",
-      label: "Task Wall",
-      icon: <ClipboardIcon className="w-5 h-5" />,
-      path: "/home/task-wall",
+      id: "dashboard",
+      label: "Dashboard",
+      icon: <ChartBarIcon className="w-5 h-5" />,
+      path: "/home/dashboard",
     },
   ];
 
   return (
     <>
-      {/* Desktop Navigation - Horizontal */}
-      <div className="hidden md:block mb-8 ">
-        <nav className="bg-white shadow-lg rounded-2xl p-2 bg-gradient-to-r to-purple-50 via-blue-100 from-purple-200">
-          <div className="flex justify-center items-center space-x-2">
+      {/* Desktop Navigation - Left Side */}
+      <div className="hidden md:block fixed  h-[calc(100%-31.9875px)] z-50 sm:block w-48 sm:w-52 md:w-56 lg:w-64 xl:w-64 2xl:72">
+        <nav className="bg-white shadow-lg h-full bg-gradient-to-b to-purple-50 via-blue-100 from-purple-200 p-4 rounded-r-3xl">
+          <div className="flex flex-col space-y-4 mt-8">
             {navItems.map((item) => (
               <NavLink
                 to={item.path}
                 key={item.id}
+                end
                 className={({ isActive }) =>
                   `px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 flex items-center space-x-2 ${
                     isActive
@@ -54,11 +55,12 @@ function NavBar() {
       </div>
 
       {/* Mobile Navigation - Bottom Tab Bar */}
-      <div className="md:hidden  bg-white border-t border-gray-200 shadow-2xl">
+      <div className="md:hidden bg-white border-t border-gray-200 shadow-2xl">
         <nav className="flex justify-around items-center py-2 px-4 max-w-sm mx-auto">
           {navItems.map((item) => (
             <NavLink
               to={item.path}
+              end
               key={item.id}
               className={({ isActive }) =>
                 `flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200 min-w-0 flex-1 ${

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./App.css";
 import {
   AddTask,
+  Dashboard,
   EditTask,
   Footer,
   Header,
@@ -12,6 +13,7 @@ import { About, Login, Signup, Start, Home } from "./pages";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "./context/userContext/useUser";
 import { SpinnerLoading } from "./components";
+import TaskProvider from "./context/taskContext/TaskProvider";
 
 function App() {
   const { isAuth, setIsAuth, setUser, loading, setLoading } = useUser();
@@ -63,7 +65,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow w-full">
+      <main className="flex-grow w-full pt-[81.6px]">
         {loading ? (
           <>
             <SpinnerLoading />
@@ -76,13 +78,15 @@ function App() {
                 path="/home/*"
                 element={
                   <Protected>
-                    <Home />
+                    <TaskProvider>
+                      <Home />
+                    </TaskProvider>
                   </Protected>
                 }
               >
-                <Route path="dashboard" element={<h1>Dash</h1>} />
+                <Route path="" element={<TaskWall />} />
+                <Route path="dashboard" element={<Dashboard />} />
                 <Route path="add-task" element={<AddTask />} />
-                <Route path="task-wall" element={<TaskWall />} />
                 <Route path="task/:id" element={<EditTask />} />
               </Route>
               <Route path="/about" element={<About />} />

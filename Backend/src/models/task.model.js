@@ -25,7 +25,7 @@ const taskSchema = mongoose.Schema(
         "home",
         "health",
         "shopping",
-        "social ",
+        "social",
         "others",
       ],
       default: "others",

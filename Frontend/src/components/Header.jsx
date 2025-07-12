@@ -38,7 +38,7 @@ function Header() {
   };
 
   return (
-    <header className="w-ful border-b-2 border-gray-200">
+    <header className="fixed top-0 left-0 w-full z-50 bg-white border-b-2 border-gray-200">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
         {/* Logo */}
         <Logo width={10} height={10} text="2xl" />
