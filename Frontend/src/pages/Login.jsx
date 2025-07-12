@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useUser } from "../context/userContext/useUser";
-import { SpinnerLoading } from "../components/SpinnerLoading";
+import { SpinnerLoading } from "../components";
 
 function Login() {
   const [email, setEmail] = useState("");
